@@ -1,0 +1,127 @@
+ChaosRealmsMod/
+|-- src/
+|   |-- main/
+|       |-- java/
+|           |-- com/
+|               |-- chaosrealms/
+|                   |-- ChaosRealmsMod.java
+|                   |-- entities/
+|                       |-- EntityMobzilla.java
+|                       |-- EntityKing.java
+|                       |-- etc/
+|                   |-- world/
+|                       |-- WorldGen.java
+|                       |-- DimensionPortal.java
+|                       |-- etc/
+|                   |-- items/
+|                       |-- ItemChaosCrystal.java
+|                   |-- blocks/
+|                       |-- BlockChaosOre.java
+|                   |-- etc/
+|
+|-- resources/
+|   |-- assets/
+|       |-- chaosrealms/
+|           |-- lang/
+|               |-- en_us.lang
+|           |-- textures/
+|               |-- mobs/
+|                   |-- mobzilla.png
+|                   |-- king.png
+|               |-- blocks/
+|                   |-- chaos_ore.png
+|
+|-- build.gradle
+|-- settings.gradle
+|-- README.md
+|-- LICENSE
+package com.chaosrealms;
+
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.CreativeModeTabsEvent;
+import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.ModEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.eventbus.api.EventBus;
+import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
+
+@Mod(ChaosRealmsMod.MODID)
+public class ChaosRealmsMod
+{
+    // Define mod id in a common place for good API design
+    public static final String MODID = "chaosrealms";
+
+    public ChaosRealmsMod() {
+        IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
+        modEventBus.addListener(this::commonSetup);
+    }
+
+    private void commonSetup(final FMLCommonSetupEvent event) {
+        // Some common setup code
+    }
+
+    // You can use EventBus to discover mods that have subscribed to this event
+    // It's common to add all static fields to EventBus so that they can be registered
+    // to the ModEventBus. You can use SubscribeEvent and let the EventBus discover
+    // all methods to call on the mod instance
+}
+package com.chaosrealms.entities;
+
+import net.minecraft.world.entity.Mob;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.level.Level;
+
+public class EntityMobzilla extends Monster {
+    public EntityMobzilla(EntityType<? extends Mob> entityType, Level level) {
+        super(entityType, level);
+    }
+
+    // Define special behaviors for Mobzilla
+}
+package com.chaosrealms.world;
+
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.placement.PlacedFeature;
+
+public class WorldGen {
+    public static final ConfiguredFeature<?, ?> CHAOS_ORE = Feature.ORE.configured(new OreConfiguration(
+            OreConfiguration.target(OreConfiguration.Predicates.STONE_ORE_REPLACEABLES, ModBlocks.CHAOS_ORE.getDefaultState()),
+            9 // Ore size
+    ));
+
+    public static void generateWorldFeatures() {
+        // Register your ore generation here
+    }
+}
+package com.chaosrealms.blocks;
+
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Material;
+
+public class BlockChaosOre extends Block {
+    public BlockChaosOre() {
+        super(Block.Properties.of(Material.STONE));
+    }
+
+    // Add any custom behavior for this block
+}
+package com.chaosrealms.items;
+
+import net.minecraft.world.item.CreativeModeTabs;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemGroup;
+import net.minecraft.world.item.CreativeModeTabsEvent;
+
+public class ItemChaosCrystal extends Item {
+    public ItemChaosCrystal() {
+        super(new Item.Properties().tab(CreativeModeTabs.BUILDING_BLOCKS));
+    }
+
+    // Add custom item behavior here
+}
